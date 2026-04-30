@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>SmartGIS - RTH</title>
+  <link rel="icon" type="image/png" href="./favicon.png" />
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background: #0b1020;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    #wrap {
+      position: fixed;
+      inset: 0;
+    }
+
+    #frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    #loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 4px solid rgba(255, 255, 255, 0.22);
+      border-top-color: rgba(104, 181, 255, 0.85);
+      animation: spin 0.85s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hint {
+      opacity: 0.85;
+      font-size: 13px;
+      text-align: center;
+      padding: 0 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <iframe
+      id="frame"
+      allow="geolocation; clipboard-read; clipboard-write"
+      referrerpolicy="no-referrer"
+    ></iframe>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <div class="hint">Mohon Tunggu.. Sebentar lagi SmartGIS akan tampil....</div>
+    </div>
+  </div>
+
+  <script>
+    // URL Web App Apps Script
+    const APP_URL = "https://script.google.com/macros/s/AKfycbxFlWBSiffMMLP68PC8OuLS_ssC3AkxIzQQr7UbVVivHNUNdrzYIgMKyr0SOS3g7BiSCw/exec";
+
+    // teruskan query string dan hash bila nanti dipakai
+    const qs = window.location.search || "";
+    const hs = window.location.hash || "";
+    const src = APP_URL + qs + hs;
+
+    const frame = document.getElementById("frame");
+    const loading = document.getElementById("loading");
+
+    frame.src = src;
+
+    frame.addEventListener("load", () => {
+      loading.style.display = "none";
+    });
+
+    // fallback jika load lama / event tidak terpanggil
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, 15000);
+  </script>
+</body>
+</html>
